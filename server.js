@@ -9,34 +9,34 @@ app.use(express.static("public"));
 
 const MONGO_URL = "mongodb://admin:qwerty@localhost:27017";
 const client = new MongoClient(MONGO_URL);
+const db_name = "mymongo-db";
 
 //GET all users
 app.get("/getUsers", async (req, res) => {
-    await client.connect(URL);
-    console.log('Connected successfully to server');
+  await client.connect(URL);
+  console.log("Connected successfully to server");
 
-    const db = client.db("apnacollege-db");
-    const data = await db.collection('users').find({}).toArray();
-    
-    client.close();
-    res.send(data);
+  const db = client.db(db_name);
+  const data = await db.collection("users").find({}).toArray();
+
+  client.close();
+  res.send(data);
 });
 
 //POST new user
 app.post("/addUser", async (req, res) => {
-    const userObj = req.body;
-    console.log(req.body);
-    await client.connect(URL);
-    console.log('Connected successfully to server');
+  const userObj = req.body;
+  console.log(req.body);
+  await client.connect(URL);
+  console.log("Connected successfully to server");
 
-    const db = client.db("apnacollege-db");
-    const data = await db.collection('users').insertOne(userObj);
-    console.log(data);
-    console.log("data inserted in DB");
-    client.close();
+  const db = client.db(db_name);
+  const data = await db.collection("users").insertOne(userObj);
+  console.log(data);
+  console.log("data inserted in DB");
+  client.close();
 });
 
-
 app.listen(PORT, () => {
-    console.log(`server running on port ${PORT}`);
+  console.log(`server running on port ${PORT}`);
 });
